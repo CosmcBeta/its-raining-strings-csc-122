@@ -1,7 +1,4 @@
 #pragma once
 
-#include <iostream>
-#include <algorithm>
-
 void businessSort();
-
+bool cstringLess(const char* a, const char* b);

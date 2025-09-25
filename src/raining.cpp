@@ -1,17 +1,22 @@
 #include "raining.hpp"
 
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+
 void businessSort()
 {
-    std::vector<std::string> businesses;
+    const int SIZE = 100;
+    std::vector<char*> businesses;
     bool keepGoing = false;
     std::cout << "Welcome to the Business Sorting Program!\n";
     do
     {
-        std::string businessName = "";
+        char businessName[SIZE] = "";
         std::cout << "Please enter the name of a business: ";
-        std::getline(std::cin, businessName);
-        businesses.push_back(businessName);
-        std::sort(businesses.begin(), businesses.end());
+        std::cin.getline(businessName, SIZE);
+        businesses.push_back(strdup(businessName));
+        std::sort(businesses.begin(), businesses.end(), cstringLess);
 
         if (businesses.size() == 1)
         {
@@ -22,29 +27,29 @@ void businessSort()
             std::cout << "Your businesses are: \n";
         }
 
-        for (std::string business : businesses)
+        for (auto business : businesses)
         {
             std::cout << business << "\n";
         }
 
         while (true)
         {
-            std::string another;
+            char another[SIZE];
             std::cout << "Another business? ";
-            std::getline(std::cin, another);
+            std::cin.getline(another, SIZE);
 
             for (char &c : another)
             {
                 c = std::tolower(c);
             }
 
-            if (another == "n" || another == "no")
+            if (std::strcmp(another, "n") == 0 || std::strcmp(another, "no") == 0)
             {
                 keepGoing = false;
-                std::cout << "Thank you for using the Business Sorting Program!";
+                std::cout << "Thank you for using the Business Sorting Program!" << std::endl;
                 break;
             }
-            else if (another == "y" || another == "yes")
+            else if (std::strcmp(another, "y") == 0 || std::strcmp(another, "yes") == 0)
             {
                 keepGoing = true;
                 break;
@@ -55,59 +60,13 @@ void businessSort()
             }
         }
     } while (keepGoing);
+
+    for (auto ptr : businesses) 
+    {
+        delete[] ptr;
+    }
 }
-// $ ./busisort.out
- 
-// Welcome to the Business Sorting Program!
- 
-// Please enter the name of a business:  WalMart
- 
-// Your business is:
- 
-//     WalMart
- 
-// Another business?  y
- 
-// Please enter the name of a business:  JC Penney
- 
-// Your businesses are:
- 
-//     JC Penney
-//     WalMart
- 
-// Another business?  Y
- 
-// Please enter the name of a business:  Merlin Muffler
- 
-// Your businesses are:
- 
-//     JC Penney
-//     Merlin Muffler
-//     WalMart
- 
-// Another business?  yes
- 
-// Please enter the name of a business:  Appleby's
- 
-// Your businesses are:
- 
-//     Appleby's
-//     JC Penney
-//     Merlin Muffler
-//     WalMart
- 
-// Another business?  Yes
- 
-// Please enter the name of a business:  Zippy's
- 
-// Your businesses are:
- 
-//     Appleby's
-//     JC Penney
-//     Merlin Muffler
-//     WalMart
-//     Zippy's
- 
-// Another business?  no
- 
-// Thank you for using the Business Sorting Program!
+
+bool cstringLess(const char* a, const char* b) {
+    return std::strcmp(a, b) < 0;
+}
