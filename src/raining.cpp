@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstring>
 #include <algorithm>
+#include <vector>
 
 void businessSort()
 {
@@ -61,7 +62,7 @@ void businessSort()
         }
     } while (keepGoing);
 
-    for (auto ptr : businesses) 
+    for (auto ptr : businesses)
     {
         delete[] ptr;
     }
